@@ -6,20 +6,34 @@ import com.app.shoplist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public abstract class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository repository;
+    UserRepository userRepository;
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
     @Override
     public String findByEmail(String email) {
         return null;
     }
 
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+
     public User editUser(Long id, User user) {
-        Optional<User> optionalUser = repository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
 
         if (optionalUser.isPresent()) {
             User updatedUser = User.builder()
@@ -29,10 +43,19 @@ public abstract class UserServiceImpl implements UserService {
                     .password(user.getPassword())
                     .build();
 
-            return repository.save(updatedUser);
+            return userRepository.save(updatedUser);
         }
         else {
             throw new RuntimeException("Usuário não encontrado");
         }
+    }
+
+    public String deleteUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+            return "Usuário deletado com sucesso";
+        }
+        return "Usuário não encontrado";
     }
 }
