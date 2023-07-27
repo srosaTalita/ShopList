@@ -1,11 +1,27 @@
 package com.app.shoplist.service.impl;
 
 import com.app.shoplist.model.User;
+import com.app.shoplist.repository.UserRepository;
 import com.app.shoplist.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
-public abstract class UserServiceImpl implements UserService {
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    UserRepository userRepository;
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
 
     @Override
     public String findByEmail(String email) {
@@ -13,11 +29,11 @@ public abstract class UserServiceImpl implements UserService {
     }
 
     public User createUser(User user) {
-        return save(user);
+        return userRepository.save(user);
     }
 
     public User editUser(Long id, User user) {
-        Optional<User> optionalUser = findById(id);
+        Optional<User> optionalUser = userRepository.findById(id);
 
         if (optionalUser.isPresent()) {
             User updatedUser = User.builder()
@@ -27,7 +43,7 @@ public abstract class UserServiceImpl implements UserService {
                     .password(user.getPassword())
                     .build();
 
-            return save(updatedUser);
+            return userRepository.save(updatedUser);
         }
         else {
             throw new RuntimeException("Usuário não encontrado");
@@ -35,9 +51,9 @@ public abstract class UserServiceImpl implements UserService {
     }
 
     public String deleteUser(Long id) {
-        Optional<User> user = this.findById(id);
+        Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            deleteById(id);
+            userRepository.deleteById(id);
             return "Usuário deletado com sucesso";
         }
         return "Usuário não encontrado";
