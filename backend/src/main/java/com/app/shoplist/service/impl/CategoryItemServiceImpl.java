@@ -1,6 +1,6 @@
 package com.app.shoplist.service.impl;
 
-import com.app.shoplist.exception.ObjectNotFoundException;
+import com.app.shoplist.exception.errors.CategoryNotFoundException;
 import com.app.shoplist.model.Category;
 import com.app.shoplist.repository.CategoryItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class CategoryItemServiceImpl {
     public Category findById(Long id) {
         return categoryItemRepository
                 .findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Not found"));
+                .orElseThrow(() -> new CategoryNotFoundException("Not found"));
     }
 
     public List<Category> createCategories(List<Category> categories) {
@@ -36,14 +36,14 @@ public class CategoryItemServiceImpl {
 
     public Category updateCategory(Long id, Category category) {
         if (!categoryItemRepository.existsById(id)) {
-            throw new ObjectNotFoundException("Not found");
+            throw new CategoryNotFoundException("Not found");
         }
         return categoryItemRepository.save(buildCategory(category));
     }
 
     public void deleteCategory(Long id) {
         if (!categoryItemRepository.existsById(id)) {
-            throw new ObjectNotFoundException("Not found");
+            throw new CategoryNotFoundException("Not found");
         }
         categoryItemRepository.deleteById(id);
     }
