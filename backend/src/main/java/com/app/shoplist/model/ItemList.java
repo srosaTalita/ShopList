@@ -32,5 +32,5 @@ public class ItemList {
     private List<ShopList> shopLists;
     @OneToOne
     @JoinColumn(name = "category_id")
-    private CategoryItem category;
+    private Category category;
 }

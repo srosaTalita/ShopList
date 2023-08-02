@@ -23,7 +23,7 @@ public class ItemListController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<ItemList>> getById(@PathVariable Long id) {
+    public ResponseEntity<ItemList> getById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(itemListService.findById(id));
     }
 

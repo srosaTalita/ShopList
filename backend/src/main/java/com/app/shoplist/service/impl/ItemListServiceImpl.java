@@ -19,8 +19,8 @@ public class ItemListServiceImpl implements ItemListService {
         return itemListRepository.findAll();
     }
 
-    public Optional<ItemList> findById(Long id) {
-        return itemListRepository.findById(id);
+    public ItemList findById(Long id) {
+        return itemListRepository.findById(id).orElse(null);
     }
     
 
