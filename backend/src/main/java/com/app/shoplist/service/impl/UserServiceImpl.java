@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()) {
             User updatedUser = User.builder()
                     .id(optionalUser.get().getId())
-                    .name(user.getName())
+                    .userName(user.getUserName())
                     .email(user.getEmail())
                     .password(user.getPassword())
                     .build();
